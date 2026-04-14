@@ -46,6 +46,36 @@ app.post("/api/products", async (req, res) => {
   }
 });
 app.get('/', (req, res) => res.json({ status: 'ok', message: 'VOLTA API with Supabase' }));
+// UPDATE PRODUCT
+app.put("/api/products/:id", async (req, res) => {
+  try {
+    const { error } = await supabase
+      .from("products")
+      .update(req.body)
+      .eq("id", req.params.id);
+
+    if (error) throw error;
+
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+// DELETE PRODUCT
+app.delete("/api/products/:id", async (req, res) => {
+  try {
+    const { error } = await supabase
+      .from("products")
+      .delete()
+      .eq("id", req.params.id);
+
+    if (error) throw error;
+
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 app.post('/api/create-order', async (req, res) => {
   try {
