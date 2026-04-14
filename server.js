@@ -31,51 +31,6 @@ app.get('/api/orders', async (req, res) => {
     res.json(data);
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
-// ADD PRODUCT
-app.post("/api/products", async (req, res) => {
-  try {
-    const { data, error } = await supabase
-      .from("products")
-      .insert([req.body]);
-
-    if (error) throw error;
-
-    res.json({ success: true, data });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-app.get('/', (req, res) => res.json({ status: 'ok', message: 'VOLTA API with Supabase' }));
-// UPDATE PRODUCT
-app.put("/api/products/:id", async (req, res) => {
-  try {
-    const { error } = await supabase
-      .from("products")
-      .update(req.body)
-      .eq("id", req.params.id);
-
-    if (error) throw error;
-
-    res.json({ success: true });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-// DELETE PRODUCT
-app.delete("/api/products/:id", async (req, res) => {
-  try {
-    const { error } = await supabase
-      .from("products")
-      .delete()
-      .eq("id", req.params.id);
-
-    if (error) throw error;
-
-    res.json({ success: true });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
 
 app.post('/api/create-order', async (req, res) => {
   try {
@@ -100,5 +55,18 @@ app.post('/api/verify-payment', async (req, res) => {
     } else { res.status(400).json({ success: false }); }
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
+// ADD PRODUCT
+app.post('/api/products', async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('products')
+      .insert([req.body]);
 
+    if (error) throw error;
+
+    res.json({ success: true, data });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 app.listen(PORT, () => console.log('VOLTA API running at http://localhost:' + PORT));
