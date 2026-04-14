@@ -31,6 +31,20 @@ app.get('/api/orders', async (req, res) => {
     res.json(data);
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
+// ADD PRODUCT
+app.post("/api/products", async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from("products")
+      .insert([req.body]);
+
+    if (error) throw error;
+
+    res.json({ success: true, data });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 app.get('/', (req, res) => res.json({ status: 'ok', message: 'VOLTA API with Supabase' }));
 
 app.post('/api/create-order', async (req, res) => {
