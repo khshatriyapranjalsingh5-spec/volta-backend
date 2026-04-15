@@ -78,13 +78,14 @@ app.post('/api/products', async (req, res) => {
       .from('products')
       .insert([{
         name,
-        price: parseInt(price),
+        price,
         category,
-        image: image || null,
+        image,
         old_price: null,
         badge: "new",
         emoji: "🛍️",
-        sub: "New Product"
+        sub: "New Item",
+        stock: 10
       }]);
 
     if (error) throw error;
@@ -92,7 +93,7 @@ app.post('/api/products', async (req, res) => {
     res.json({ success: true, data });
 
   } catch (err) {
-    console.log("ERROR:", err.message); // 👈 check this in backend logs
+    console.log("ERROR:", err.message); // 👈 IMPORTANT
     res.status(500).json({ error: err.message });
   }
 });
