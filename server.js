@@ -55,17 +55,31 @@ app.post('/api/verify-payment', async (req, res) => {
     } else { res.status(400).json({ success: false }); }
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
-// ADD PRODUCT
+// ADD PRODUCT (FIXED)
 app.post('/api/products', async (req, res) => {
   try {
+    const { name, price, category, image } = req.body;
+
     const { data, error } = await supabase
       .from('products')
-      .insert([req.body]);
+      .insert([{
+        name,
+        price,
+        category,
+        image,
+        old_price: null,
+        badge: "new",
+        emoji: "🛍️",
+        sub: "New Item",
+        stock: 10
+      }]);
 
     if (error) throw error;
 
     res.json({ success: true, data });
+
   } catch (err) {
+    console.log("ERROR:", err.message); // 👈 debug
     res.status(500).json({ error: err.message });
   }
 });
